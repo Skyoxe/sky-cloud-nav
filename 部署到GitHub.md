@@ -1,11 +1,10 @@
 # 部署到 GitHub Pages（得到 xxx.github.io 网址）
 
-> 你的 GitHub 用户名已确定为 **Sky91o**，所以本站上线后的网址是：
-> **https://Sky91o.github.io/sky-cloud-nav/**
+> 你的 GitHub 用户名是 **Skyoxe**，本站线上网址（已上线）：
+> **https://Skyoxe.github.io/sky-cloud-nav/**
 >
-> 说明：`xxx.github.io` 里的 `xxx` 就是 GitHub 用户名，不能随意填写。
-> 用户名 `sky91` 已被他人注册，因此用你自己的 `Sky91o`。
-> 想换成更好记的地址，可以后期绑定自有域名。
+> 说明：`xxx.github.io` 里的 `xxx` 就是 GitHub 用户名。原来占用的 `sky91` 已被他人注册，
+> 现在使用你自己的 `Skyoxe`。想换成更好记的地址，可以后期绑定自有域名。
 >
 > 好消息：GitHub Pages 免费、不用备案。
 
@@ -13,7 +12,7 @@
 
 ## 方法一：网页上传（不用装任何软件，推荐新手）
 
-1. 打开 https://github.com ，用你的账号 **Sky91o** 登录；
+1. 打开 https://github.com ，用你的账号 **Skyoxe** 登录；
 2. 右上角 **+** → **New repository**；
    - Repository name 填 `sky-cloud-nav`（决定网址最后一段，建议照填）
    - 可见性选 **Public**（Private 仓库的 Pages 需要付费）
@@ -27,13 +26,13 @@
    - Source 选 **Deploy from a branch**
    - Branch 选 **main** ，目录选 **/ (root)** → **Save**
 7. 等 1～2 分钟刷新该页面，顶部会出现
-   `Your site is live at https://Sky91o.github.io/sky-cloud-nav/` —— 这就是你的网址。
+   `Your site is live at https://Skyoxe.github.io/sky-cloud-nav/` —— 这就是你的网址。
 
 ---
 
 ## 方法二：命令行推送（本机仓库已经建好并提交）
 
-本项目已经执行过 `git init` 并提交，远程地址也已配好（指向 Sky91o 的仓库），
+本项目已经执行过 `git init` 并提交，远程地址也已配好（指向 Skyoxe 的仓库），
 先在网页上建好空仓库，然后打开 PowerShell，在本目录执行：
 
 ```powershell
@@ -41,7 +40,7 @@ git push -u origin main
 ```
 
 > 如果提示远程地址不存在，重新配置一次：
-> `git remote set-url origin https://github.com/Sky91o/sky-cloud-nav.git`
+> `git remote set-url origin https://github.com/Skyoxe/sky-cloud-nav.git`
 
 推送时若弹出登录窗口，选择 **Sign in with your browser** 授权即可
 （GitHub 已不支持账号密码推送）。
@@ -71,7 +70,7 @@ git push
 
 1. 买一个域名（阿里云 / 腾讯云 / Cloudflare 均可，几十元一年）；
 2. 在域名 DNS 里添加 CNAME 记录：主机记录填 `nav` 或 `@`，
-   记录值填 `Sky91o.github.io`；
+   记录值填 `Skyoxe.github.io`；
 3. 仓库 **Settings → Pages → Custom domain** 填入你的域名并保存，
    勾选 **Enforce HTTPS**。
 
@@ -79,9 +78,9 @@ git push
 
 ## 常见问题
 
-**Q：能不能让网址就是 `sky91.github.io`？**
-不能。前半段由账号名决定，`sky91` 已被他人注册。你的地址是
-`https://Sky91o.github.io/sky-cloud-nav/`；想更好记可买域名绑成 `sky91.com` 这类。
+**Q：能不能让网址更短，比如 `skyoxe.github.io`？**
+可以 —— 把仓库名改成 `Skyoxe.github.io`（和用户名完全一致），
+网址就会变成 `https://skyoxe.github.io/`，内容不用动。
 
 **Q：打开后是 404？**
 - 确认 Pages 里分支选的是 `main`、目录是 `/ (root)`，且已 Save；
