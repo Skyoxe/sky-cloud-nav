@@ -9,6 +9,11 @@
 2. 部署：把整个文件夹上传到任意静态托管
    （GitHub Pages / Vercel / Netlify / 对象存储静态网站均可）。
 
+### 线上地址
+
+- GitHub Pages（目标地址）：https://Sky91o.github.io/sky-cloud-nav/
+- 部署步骤见 `部署到GitHub.md`
+
 ## 自定义（只改 links.js）
 
 ### 站点文案
