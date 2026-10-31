@@ -11,7 +11,7 @@
 
 ### 线上地址
 
-- GitHub Pages（目标地址）：https://Sky91o.github.io/sky-cloud-nav/
+- GitHub Pages（目标地址）：https://Skyoxe.github.io/sky-cloud-nav/
 - 部署步骤见 `部署到GitHub.md`
 
 ## 自定义（只改 links.js）
