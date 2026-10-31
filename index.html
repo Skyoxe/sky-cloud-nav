@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#118ee8">
+  <meta name="description" content="云端收藏导航：把散落在云端的收藏，一次抵达。">
+  <meta property="og:title" content="云端收藏 · 云盘导航">
+  <meta property="og:description" content="把散落在云端的收藏，一次抵达。">
+  <meta property="og:type" content="website">
+  <title>云端收藏 · 云盘导航</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="assets/bg.png" as="image">
+  <link rel="stylesheet" href="style.css">
+  <script>document.documentElement.classList.add('js');</script>
+</head>
+<body>
+  <div class="scene" aria-hidden="true">
+    <div class="scene-photo"></div>
+    <div class="scene-wash"></div>
+  </div>
+  <canvas id="aura" aria-hidden="true"></canvas>
+
+  <header class="site-header">
+    <a class="brand" href="./" aria-label="返回首页">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 32 32" fill="none">
+          <path d="M8.2 22.1h15.1a4.7 4.7 0 0 0 .5-9.4A7.4 7.4 0 0 0 9.4 11a5.6 5.6 0 0 0-1.2 11.1Z"/>
+          <path d="m12 16 4 4 5-6"/>
+        </svg>
+      </span>
+      <span class="brand-copy">
+        <strong id="brand-name">云端收藏</strong>
+        <small id="brand-sub">SKY CLOUD INDEX</small>
+      </span>
+    </a>
+    <div class="online"><i></i><span id="counter">4 个入口</span></div>
+  </header>
+
+  <main class="hero">
+    <section class="panel" aria-labelledby="page-title">
+      <p class="eyebrow"><span id="eyebrow-left">SKY LINKS</span><span class="eyebrow-line"></span><span id="eyebrow-right">2026</span></p>
+      <h1 id="page-title">云盘<span>导航</span></h1>
+      <p class="lead" id="lead">把散落在云端的收藏，<br>一次抵达。</p>
+
+      <nav class="link-grid" aria-label="快捷入口" id="link-grid">
+        <noscript>请启用 JavaScript 以加载导航卡片。</noscript>
+      </nav>
+
+      <div class="hint">
+        <span class="hint-mouse" aria-hidden="true"><i></i></span>
+        <span class="hint-desktop">移动鼠标 · 点亮云海</span>
+        <span class="hint-mobile">轻触屏幕 · 点亮云海</span>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <span id="footer-left">云端收藏</span>
+    <span class="footer-dot"></span>
+    <span id="footer-right">四座云岛，一键抵达</span>
+  </footer>
+
+  <script src="links.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
