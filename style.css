@@ -52,7 +52,7 @@ a {
 .scene-photo {
   position: absolute;
   inset: -36px;
-  background-image: url("assets/bg.png");
+  background-image: url("assets/bg.jpg");
   background-size: cover;
   background-position: center 43%;
   transform: translate3d(var(--px), var(--py), 0) scale(1.045);
@@ -253,10 +253,27 @@ h1 span {
   background: rgba(5, 43, 76, .29);
   box-shadow: inset 0 1px rgba(255, 255, 255, .09);
   transition:
-    transform .38s cubic-bezier(.2, .8, .2, 1),
+    transform .5s cubic-bezier(.22, 1, .36, 1),
     border-color .25s ease,
     background-color .25s ease,
-    box-shadow .35s ease;
+    box-shadow .4s ease;
+}
+
+/* 入场：面板与卡片依次上浮淡入（backwards 填充，动画结束后交还 hover 控制） */
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(.985);
+  }
+}
+
+.js .panel {
+  animation: rise-in .8s cubic-bezier(.22, 1, .36, 1) backwards;
+}
+
+.js .link-card {
+  animation: rise-in .7s cubic-bezier(.22, 1, .36, 1) backwards;
+  animation-delay: calc(140ms + var(--i, 0) * 70ms);
 }
 
 .link-card::before {
@@ -372,32 +389,49 @@ h1 span {
   letter-spacing: .12em;
 }
 
-.link-card:hover,
+@media (hover: hover) and (pointer: fine) {
+  .link-card:hover {
+    z-index: 3;
+    border-color: color-mix(in srgb, var(--accent) 62%, white 18%);
+    background-color: rgba(9, 57, 97, .56);
+    box-shadow: 0 16px 36px rgba(0, 35, 60, .3), inset 0 1px rgba(255, 255, 255, .16);
+    transform: translateY(-4px);
+  }
+
+  .link-card:hover::before,
+  .link-card:hover::after {
+    opacity: 1;
+  }
+
+  .link-card:hover .card-glow {
+    opacity: .25;
+    transform: scale(1.22) translate(-7px, 7px);
+  }
+
+  .link-card:hover .card-arrow {
+    color: #052b45;
+    background: var(--accent);
+    transform: rotate(4deg) scale(1.08);
+  }
+}
+
+/* 键盘焦点（任何设备都保留） */
 .link-card:focus-visible {
   z-index: 3;
   border-color: color-mix(in srgb, var(--accent) 62%, white 18%);
   background-color: rgba(9, 57, 97, .56);
-  box-shadow: 0 16px 36px rgba(0, 35, 60, .3), inset 0 1px rgba(255, 255, 255, .16);
-  transform: translateY(-4px);
   outline: none;
 }
 
-.link-card:hover::before,
-.link-card:hover::after,
 .link-card:focus-visible::before,
 .link-card:focus-visible::after {
   opacity: 1;
 }
 
-.link-card:hover .card-glow {
-  opacity: .25;
-  transform: scale(1.22) translate(-7px, 7px);
-}
-
-.link-card:hover .card-arrow {
-  color: #052b45;
-  background: var(--accent);
-  transform: rotate(4deg) scale(1.08);
+/* 触屏按压反馈：让手机点按有"按下去了"的手感 */
+.link-card:active {
+  transform: translateY(-1px) scale(.984);
+  transition-duration: .12s;
 }
 
 .link-card:focus-visible {
@@ -514,6 +548,20 @@ h1 span {
   .panel {
     padding: 25px 20px 22px;
     border-radius: 24px;
+    /* 小屏降低玻璃模糊半径，显著减少合成开销、滚动更跟手 */
+    backdrop-filter: blur(14px) saturate(1.15);
+    -webkit-backdrop-filter: blur(14px) saturate(1.15);
+  }
+
+  .brand-mark,
+  .online {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+
+  .qr-backdrop {
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
   }
 
   .eyebrow {
@@ -557,10 +605,11 @@ h1 span {
     transform: translateY(-50%);
   }
 
-  .link-card:hover .card-arrow {
-    transform: translateY(-50%) rotate(4deg) scale(1.08);
+  @media (hover: hover) {
+    .link-card:hover .card-arrow {
+      transform: translateY(-50%) rotate(4deg) scale(1.08);
+    }
   }
-
   .card-index {
     display: none;
   }
@@ -696,8 +745,8 @@ button.link-card:focus-visible {
   align-items: center;
   gap: 12px;
   opacity: 0;
-  transform: translateY(14px) scale(.96);
-  transition: opacity .24s ease, transform .28s cubic-bezier(.2, .8, .2, 1);
+  transform: translateY(14px) scale(.94);
+  transition: opacity .28s ease, transform .42s cubic-bezier(.16, 1, .3, 1);
 }
 
 .qr-modal.is-open .qr-backdrop { opacity: 1; }
