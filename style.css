@@ -658,6 +658,17 @@ button.link-card:focus-visible {
   align-items: center;
   justify-content: center;
   padding: 24px;
+  /* 未打开时彻底移出交互层，避免遮挡页面点击 */
+  pointer-events: none;
+}
+
+/* 关键：hidden 时必须真正不显示（否则 flex 会覆盖 UA 的 display:none） */
+.qr-modal[hidden] {
+  display: none !important;
+}
+
+.qr-modal.is-open {
+  pointer-events: auto;
 }
 
 .qr-backdrop {
