@@ -631,3 +631,119 @@ h1 span {
     transform: none;
   }
 }
+
+/* ============================================================
+ * 弹窗型卡片（button 版 link-card）样式重置
+ * ============================================================ */
+button.link-card {
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+button.link-card:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--accent) 70%, white);
+  outline-offset: 3px;
+}
+
+/* ============================================================
+ * 二维码弹窗
+ * ============================================================ */
+.qr-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.qr-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(2, 18, 34, .62);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  opacity: 0;
+  transition: opacity .24s ease;
+}
+
+.qr-dialog {
+  position: relative;
+  margin: 0;
+  width: min(320px, 86vw);
+  max-height: min(88vh, 720px);
+  padding: 16px 16px 18px;
+  border: 1px solid rgba(255, 255, 255, .22);
+  border-radius: 22px;
+  background: rgba(10, 40, 70, .55);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, .45), inset 0 1px rgba(255, 255, 255, .12);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  opacity: 0;
+  transform: translateY(14px) scale(.96);
+  transition: opacity .24s ease, transform .28s cubic-bezier(.2, .8, .2, 1);
+}
+
+.qr-modal.is-open .qr-backdrop { opacity: 1; }
+.qr-modal.is-open .qr-dialog { opacity: 1; transform: none; }
+
+.qr-img {
+  display: block;
+  width: 100%;
+  max-height: 52vh;
+  object-fit: contain;
+  border-radius: 14px;
+  background: #fff;
+}
+
+.qr-dialog figcaption {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  text-align: center;
+}
+.qr-dialog .qr-name {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--ink, #f8fbff);
+}
+.qr-dialog .qr-num {
+  font-size: .86rem;
+  color: var(--muted, rgba(239, 248, 255, .72));
+}
+.qr-dialog em {
+  margin-top: 6px;
+  font-style: normal;
+  font-size: .74rem;
+  line-height: 1.6;
+  color: rgba(239, 248, 255, .55);
+}
+
+.qr-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, .22);
+  border-radius: 50%;
+  background: rgba(5, 30, 55, .55);
+  color: #fff;
+  cursor: pointer;
+  transition: background .2s ease, transform .2s ease;
+}
+.qr-close:hover { background: rgba(5, 30, 55, .85); transform: rotate(90deg); }
+.qr-close svg { width: 16px; height: 16px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .qr-backdrop, .qr-dialog { transition: none; }
+}
