@@ -45,7 +45,7 @@
         return `
       <button type="button" class="link-card" data-qr="${esc(item.qr)}"
               data-name="${esc(item.name)}" data-num="${esc(item.num || "")}"
-              style="--accent:${esc(item.accent || "#76e7ff")}">
+              style="--accent:${esc(item.accent || "#76e7ff")};--i:${i}">
         <span class="card-glow" aria-hidden="true"></span>
         <span class="icon-wrap" aria-hidden="true">
           <svg viewBox="0 0 32 32">${iconSvg(item.icon)}</svg>
@@ -62,7 +62,7 @@
       }
       return `
       <a class="link-card" href="${esc(item.url)}" target="_blank" rel="noopener noreferrer"
-         style="--accent:${esc(item.accent || "#76e7ff")}">
+         style="--accent:${esc(item.accent || "#76e7ff")};--i:${i}">
         <span class="card-glow" aria-hidden="true"></span>
         <span class="icon-wrap" aria-hidden="true">
           <svg viewBox="0 0 32 32">${iconSvg(item.icon)}</svg>
@@ -140,9 +140,35 @@
 
   const root = document.documentElement;
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const isSmallScreen = window.matchMedia("(max-width: 760px)").matches;
   const canvas = document.querySelector("#aura");
   const context = canvas.getContext("2d", { alpha: true });
   const cards = [...document.querySelectorAll(".link-card")];
+
+  /* 性能分层：手机降低分辨率与粒子数量，桌面全速 */
+  const MAX_PARTICLES = isSmallScreen ? 90 : 210;
+  const DPR_CAP = isSmallScreen ? 1.5 : 2;
+
+  /* 预渲染软光斑精灵：每帧一次 drawImage 取代逐粒子 createRadialGradient，
+     消除每帧最多 200+ 次渐变对象创建，这是光效卡顿的最大来源 */
+  const sprites = [
+    [111, 230, 255],
+    [255, 218, 92],
+    [138, 242, 191],
+    [172, 186, 255]
+  ].map(([r, g, b]) => {
+    const size = 64;
+    const s = document.createElement("canvas");
+    s.width = s.height = size;
+    const c = s.getContext("2d");
+    const grad = c.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2);
+    grad.addColorStop(0, `rgba(${r}, ${g}, ${b}, .9)`);
+    grad.addColorStop(.38, `rgba(${r}, ${g}, ${b}, .35)`);
+    grad.addColorStop(1, `rgba(${r}, ${g}, ${b}, 0)`);
+    c.fillStyle = grad;
+    c.fillRect(0, 0, size, size);
+    return s;
+  });
 
   let width = 0;
   let height = 0;
@@ -161,6 +187,12 @@
   const particles = [];
   const ripples = [];
 
+  /* 缓存卡片几何信息，避免每次指针移动都触发 5 次强制布局读取 */
+  let cardRects = [];
+  function refreshRects() {
+    cardRects = cards.map((card) => card.getBoundingClientRect());
+  }
+
   const palette = [
     [111, 230, 255],
     [255, 218, 92],
@@ -171,18 +203,20 @@
   function resize() {
     width = window.innerWidth;
     height = window.innerHeight;
-    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    dpr = Math.min(window.devicePixelRatio || 1, DPR_CAP);
     canvas.width = Math.round(width * dpr);
     canvas.height = Math.round(height * dpr);
     canvas.style.width = `${width}px`;
     canvas.style.height = `${height}px`;
     context.setTransform(dpr, 0, 0, dpr, 0, 0);
+    refreshRects();
   }
 
   function createParticle(x, y, force = 1, colorIndex = -1) {
+    if (particles.length >= MAX_PARTICLES) return;
     const angle = Math.random() * Math.PI * 2;
     const speed = (0.15 + Math.random() * 0.85) * force;
-    const color = palette[colorIndex >= 0 ? colorIndex : Math.floor(Math.random() * palette.length)];
+    const index = colorIndex >= 0 ? colorIndex : Math.floor(Math.random() * sprites.length);
     particles.push({
       x,
       y,
@@ -191,7 +225,7 @@
       size: 10 + Math.random() * 28,
       life: 1,
       decay: 0.010 + Math.random() * 0.012,
-      color
+      sprite: sprites[index]
     });
   }
 
@@ -218,9 +252,11 @@
     root.style.setProperty("--py", `${normalizedY.toFixed(2)}px`);
 
     if (!reduceMotion) addTrail(pointerX, pointerY, event.pressure || 0.8);
-    for (const card of cards) {
-      const rect = card.getBoundingClientRect();
+    /* 使用缓存的矩形做命中判断，命中后才写一次 CSS 变量 */
+    for (let i = 0; i < cardRects.length; i += 1) {
+      const rect = cardRects[i];
       if (pointerX >= rect.left && pointerX <= rect.right && pointerY >= rect.top && pointerY <= rect.bottom) {
+        const card = cards[i];
         card.style.setProperty("--mx", `${pointerX - rect.left}px`);
         card.style.setProperty("--my", `${pointerY - rect.top}px`);
         break;
@@ -281,17 +317,12 @@
       }
 
       const radius = particle.size * (1.1 + (1 - particle.life) * 1.5);
-      const [r, g, b] = particle.color;
-      const gradient = context.createRadialGradient(particle.x, particle.y, 0, particle.x, particle.y, radius);
-      gradient.addColorStop(0, `rgba(${r}, ${g}, ${b}, ${0.23 * particle.life})`);
-      gradient.addColorStop(0.38, `rgba(${r}, ${g}, ${b}, ${0.09 * particle.life})`);
-      gradient.addColorStop(1, `rgba(${r}, ${g}, ${b}, 0)`);
-      context.fillStyle = gradient;
-      context.beginPath();
-      context.arc(particle.x, particle.y, radius, 0, Math.PI * 2);
-      context.fill();
+      const diameter = radius * 2;
+      context.globalAlpha = particle.life * 0.26;
+      context.drawImage(particle.sprite, particle.x - radius, particle.y - radius, diameter, diameter);
     }
 
+    context.globalAlpha = 1;
     context.globalCompositeOperation = "source-over";
   }
 
@@ -350,7 +381,7 @@
     if (hasPointer) {
       easedX += (pointerX - easedX) * 0.075;
       easedY += (pointerY - easedY) * 0.075;
-      if (particles.length < 210) {
+      if (particles.length < MAX_PARTICLES) {
         const idleSpeed = Math.hypot(pointerX - lastPointerX, pointerY - lastPointerY);
         if (idleSpeed > 1.5) addTrail(pointerX, pointerY, 0.55, now);
       }
@@ -376,6 +407,13 @@
     resize();
     cards.length = 0;
     cards.push(...document.querySelectorAll(".link-card"));
+    refreshRects();
+  }, { passive: true });
+  /* 滚动会改变卡片相对视口的位置，滚动结束后重算一次 */
+  let scrollTimer = 0;
+  window.addEventListener("scroll", () => {
+    clearTimeout(scrollTimer);
+    scrollTimer = setTimeout(refreshRects, 140);
   }, { passive: true });
   window.addEventListener("pointermove", handlePointerMove, { passive: true });
   window.addEventListener("pointerdown", handlePointerDown, { passive: true });
@@ -384,6 +422,8 @@
     if (isVisible) start();
     else stop();
   });
+  /* 入场动画会瞬时改变卡片位置，动画结束后校准一次缓存 */
+  setTimeout(refreshRects, 1400);
 
   if (reduceMotion) {
     drawAmbient(0);
