@@ -39,7 +39,28 @@
 
   function renderCards() {
     const grid = document.getElementById("link-grid");
-    grid.innerHTML = LINKS.map((item, i) => `
+    grid.innerHTML = LINKS.map((item, i) => {
+      // 弹窗型卡片（配置了 qr 字段）：渲染成 button，点击弹出二维码
+      if (item.qr) {
+        return `
+      <button type="button" class="link-card" data-qr="${esc(item.qr)}"
+              data-name="${esc(item.name)}" data-num="${esc(item.num || "")}"
+              style="--accent:${esc(item.accent || "#76e7ff")}">
+        <span class="card-glow" aria-hidden="true"></span>
+        <span class="icon-wrap" aria-hidden="true">
+          <svg viewBox="0 0 32 32">${iconSvg(item.icon)}</svg>
+        </span>
+        <span class="card-copy">
+          <strong>${esc(item.name)}</strong>
+          <small>${esc(item.desc)}</small>
+        </span>
+        <span class="card-arrow" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M4 8V4h4M16 4h4v4M4 16v4h4M20 16v4h-4"/><rect x="8.5" y="8.5" width="7" height="7" rx="1.5"/></svg>
+        </span>
+        <span class="card-index" aria-hidden="true">${String(i + 1).padStart(2, "0")}</span>
+      </button>`;
+      }
+      return `
       <a class="link-card" href="${esc(item.url)}" target="_blank" rel="noopener noreferrer"
          style="--accent:${esc(item.accent || "#76e7ff")}">
         <span class="card-glow" aria-hidden="true"></span>
@@ -54,11 +75,64 @@
           <svg viewBox="0 0 24 24" fill="none"><path d="M6 18 18 6M9 6h9v9"/></svg>
         </span>
         <span class="card-index" aria-hidden="true">${String(i + 1).padStart(2, "0")}</span>
-      </a>`).join("");
+      </a>`;
+    }).join("");
   }
 
   renderSite();
   renderCards();
+
+  /* ============================================================
+   * 一·二、二维码弹窗（点击带 qr 字段的卡片时弹出）
+   * ============================================================ */
+
+  const modal = document.createElement("div");
+  modal.className = "qr-modal";
+  modal.hidden = true;
+  modal.innerHTML = `
+    <div class="qr-backdrop" aria-hidden="true"></div>
+    <figure class="qr-dialog" role="dialog" aria-modal="true" aria-label="频道二维码">
+      <button type="button" class="qr-close" aria-label="关闭">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+      <img class="qr-img" alt="频道二维码">
+      <figcaption>
+        <strong class="qr-name"></strong>
+        <span class="qr-num"></span>
+        <em>长按或截图保存 · 打开手机 QQ / 腾讯频道「扫一扫」识别</em>
+      </figcaption>
+    </figure>`;
+  document.body.append(modal);
+
+  const qrImg = modal.querySelector(".qr-img");
+  const qrName = modal.querySelector(".qr-name");
+  const qrNum = modal.querySelector(".qr-num");
+
+  function openQr(item) {
+    qrImg.src = item.dataset.qr;
+    qrName.textContent = item.dataset.name;
+    qrNum.textContent = item.dataset.num;
+    qrNum.hidden = !item.dataset.num;
+    modal.hidden = false;
+    requestAnimationFrame(() => modal.classList.add("is-open"));
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeQr() {
+    modal.classList.remove("is-open");
+    document.body.style.overflow = "";
+    setTimeout(() => { modal.hidden = true; qrImg.src = ""; }, 240);
+  }
+
+  document.getElementById("link-grid").addEventListener("click", (event) => {
+    const card = event.target.closest("[data-qr]");
+    if (card) openQr(card);
+  });
+  modal.querySelector(".qr-close").addEventListener("click", closeQr);
+  modal.querySelector(".qr-backdrop").addEventListener("click", closeQr);
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && !modal.hidden) closeQr();
+  });
 
   /* ============================================================
    * 二、云海光效（画布粒子 + 指针光晕 + 背景视差）
