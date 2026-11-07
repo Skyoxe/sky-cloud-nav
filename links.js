@@ -68,38 +68,43 @@ const BUTTON_GROUPS = [
 
 /* ------------------------------------------------------------
  * 网盘下载卡片
- *   badge  左侧彩色小方块里的短文字（2~3 字最好）
- *   color  小方块底色
- *   url    跳转链接（新标签页打开）
- *   qr     设为 true 时不跳转，改为弹出二维码
+ *   badge   左侧徽章里的短文字（2~3 字最好）
+ *   color   徽章渐变的亮色（左上）
+ *   color2  徽章渐变的深色（右下），不填则自动沿用 color
+ *   url     跳转链接（新标签页打开）
+ *   qr      设为 true 时不跳转，改为弹出二维码
  * ------------------------------------------------------------ */
 const LINKS = [
   {
     badge: "移动",
     name: "移动云盘",
     note: "中国移动 · 分享直达",
-    color: "#00A9E0",
+    color: "#4DD8FF",
+    color2: "#0079C8",
     url: "https://yun.139.com/shareweb/#/w/i/2yA8zUW8FvNa9",
   },
   {
     badge: "夸克",
     name: "夸克网盘",
     note: "极速转存 · 在线预览",
-    color: "#1677FF",
+    color: "#6FB0FF",
+    color2: "#1B4FD8",
     url: "https://pan.quark.cn/s/7c6640d8a7fe",
   },
   {
     badge: "百度",
     name: "百度网盘",
     note: "资源合集 · 一键转存",
-    color: "#2932E1",
+    color: "#918DFF",
+    color2: "#2B23B5",
     url: "https://pan.baidu.com/s/1brCWCgk7LBdUY-YJnGFMQA?pwd=2345",
   },
   {
     badge: "UC",
     name: "UC 网盘",
     note: "免登录浏览 · 分享页",
-    color: "#FF6A00",
+    color: "#FFC46B",
+    color2: "#EE5A0C",
     url: "https://drive.uc.cn/s/3628b19ac6ae4?public=1",
   },
 ];

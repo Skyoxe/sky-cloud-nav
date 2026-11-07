@@ -19,6 +19,18 @@
     .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
 
+  /* 徽章配色：只接受 #RGB / #RRGGBB，避免配置文件里混入其它 CSS */
+  const safeColor = (v, fallback) => {
+    const m = /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.exec(String(v || "").trim());
+    return m ? m[0] : fallback;
+  };
+  const toRgba = (hex, alpha) => {
+    let h = hex.slice(1);
+    if (h.length === 3) h = h.split("").map((c) => c + c).join("");
+    const n = parseInt(h, 16);
+    return `rgba(${(n >> 16) & 255},${(n >> 8) & 255},${n & 255},${alpha})`;
+  };
+
   /* ============================================================
    * 二、按 links.js 渲染内容
    * ============================================================ */
@@ -54,17 +66,21 @@
     $("about-body").innerHTML = ABOUT.map((p) => `<p>${esc(p)}</p>`).join("");
 
     $("downloads-grid").innerHTML = LINKS.map((item, i) => {
+      /* 渐变两色 + 由亮色生成的柔光，都交给 CSS 变量，样式集中在 style.css */
+      const c1 = safeColor(item.color, "#7B68EE");
+      const c2 = safeColor(item.color2, c1);
+      const vars = `--i:${i};--c1:${c1};--c2:${c2};--glow:${toRgba(c1, 0.42)}`;
       const inner = `
-        <span class="download-badge" style="background:${esc(item.color)}">${esc(item.badge)}</span>
+        <span class="download-badge"><span class="badge-label">${esc(item.badge)}</span></span>
         <span class="download-info">
           <span class="download-name">${esc(item.name)}</span>
           <span class="download-note">${esc(item.note)}</span>
         </span>
         <span class="download-arrow">${ARROW}</span>`;
       if (item.qr) {
-        return `<button type="button" class="download-card" data-qr style="--i:${i}">${inner}</button>`;
+        return `<button type="button" class="download-card" data-qr style="${vars}">${inner}</button>`;
       }
-      return `<a class="download-card" href="${esc(item.url)}" target="_blank" rel="noopener noreferrer" style="--i:${i}">${inner}</a>`;
+      return `<a class="download-card" href="${esc(item.url)}" target="_blank" rel="noopener noreferrer" style="${vars}">${inner}</a>`;
     }).join("");
   }
   render();
