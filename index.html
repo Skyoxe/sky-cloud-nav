@@ -2,66 +2,92 @@
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#118ee8">
-  <meta name="description" content="云端收藏导航：把散落在云端的收藏，一次抵达。">
-  <meta property="og:title" content="云端收藏 · 云盘导航">
-  <meta property="og:description" content="把散落在云端的收藏，一次抵达。">
-  <meta property="og:type" content="website">
-  <title>云端收藏 · 云盘导航</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#1a1a2e">
+  <meta name="description" content="Sky·光遇：光遇资源网盘导航，一键直达。">
+  <meta property="og:title" content="Sky·光遇 · 网盘导航">
+  <meta property="og:description" content="与光相遇 · 资源直达。">
+  <title>Sky·光遇 · 网盘导航</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="preload" href="assets/bg.jpg" as="image">
-  <link rel="stylesheet" href="style.css?v=20261101c">
-  <script>document.documentElement.classList.add('js');</script>
+  <link rel="stylesheet" href="style.css?v=20261107i">
 </head>
 <body>
-  <div class="scene" aria-hidden="true">
-    <div class="scene-photo"></div>
-    <div class="scene-wash"></div>
-  </div>
-  <canvas id="aura" aria-hidden="true"></canvas>
 
-  <header class="site-header">
-    <a class="brand" href="./" aria-label="返回首页">
-      <span class="brand-mark" aria-hidden="true">
-        <svg viewBox="0 0 32 32" fill="none">
-          <path d="M8.2 22.1h15.1a4.7 4.7 0 0 0 .5-9.4A7.4 7.4 0 0 0 9.4 11a5.6 5.6 0 0 0-1.2 11.1Z"/>
-          <path d="m12 16 4 4 5-6"/>
-        </svg>
-      </span>
-      <span class="brand-copy">
-        <strong id="brand-name">云端收藏</strong>
-        <small id="brand-sub">SKY CLOUD INDEX</small>
-      </span>
-    </a>
-    <div class="online"><i></i><span id="counter">4 个入口</span></div>
-  </header>
+  <!-- ====== 首屏 ====== -->
+  <section class="intro" id="intro">
+    <canvas id="background" aria-hidden="true"></canvas>
+    <canvas id="flow" aria-hidden="true"></canvas>
+    <div class="intro-veil" aria-hidden="true"></div>
+    <div class="intro-inner">
+      <h1 class="intro-title" id="intro-title">Sky·光遇</h1>
+      <p class="intro-sub" id="intro-sub">网盘资源 · 一键直达</p>
+      <button class="enter" id="enterBtn" type="button" aria-label="进入导航">
+        <span class="enter-ring">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 5v14M19 12l-7 7-7-7"/>
+          </svg>
+        </span>
+      </button>
+    </div>
+    <span class="intro-tip">轻触箭头进入</span>
+  </section>
 
-  <main class="hero">
-    <section class="panel" aria-labelledby="page-title">
-      <p class="eyebrow"><span id="eyebrow-left">SKY LINKS</span><span class="eyebrow-line"></span><span id="eyebrow-right">2026</span></p>
-      <h1 id="page-title">云盘<span>导航</span></h1>
-      <p class="lead" id="lead">把散落在云端的收藏，<br>一次抵达。</p>
+  <!-- ====== 主屏 ====== -->
+  <section class="main" id="main" aria-hidden="true">
 
-      <nav class="link-grid" aria-label="快捷入口" id="link-grid">
-        <noscript>请启用 JavaScript 以加载导航卡片。</noscript>
-      </nav>
+    <header class="topbar">
+      <span class="topbar-brand">Sky·光遇</span>
+      <span class="topbar-count" id="counter">5 个入口</span>
+    </header>
 
-      <div class="hint">
-        <span class="hint-mouse" aria-hidden="true"><i></i></span>
-        <span class="hint-desktop">移动鼠标 · 点亮云海</span>
-        <span class="hint-mobile">轻触屏幕 · 点亮云海</span>
+    <!-- 名片卡 -->
+    <div class="card-wrap">
+      <div class="card" id="card">
+        <div class="card-inner">
+          <img class="card-avatar" src="assets/avatar.png" alt="Sky·光遇 头像">
+          <h1 id="card-title">Sky·光遇</h1>
+          <p class="card-slogan" id="card-slogan"></p>
+          <ul class="card-links" id="card-links"></ul>
+        </div>
       </div>
+    </div>
+
+    <!-- 提示条 -->
+    <div class="notice-wrap" id="notice-wrap">
+      <div class="notice" id="notice">
+        <span class="notice-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+            <path d="M12 9v4M12 17h.01"/>
+          </svg>
+        </span>
+        <div class="notice-body">
+          <div class="notice-title" id="notice-title"></div>
+          <ol class="notice-list" id="notice-list"></ol>
+        </div>
+      </div>
+    </div>
+
+    <!-- 网盘下载 -->
+    <section class="downloads" id="downloads">
+      <h2 id="downloads-title">网盘下载</h2>
+      <p class="downloads-sub" id="downloads-sub"></p>
+      <div class="downloads-grid" id="downloads-grid"></div>
     </section>
-  </main>
 
-  <footer class="site-footer">
-    <span id="footer-left">云端收藏</span>
-    <span class="footer-dot"></span>
-    <span id="footer-right">四座云岛，一键抵达</span>
-  </footer>
+    <!-- 关于 -->
+    <section class="about" id="about">
+      <h2 id="about-title">关于本站</h2>
+      <div class="about-body" id="about-body"></div>
+    </section>
 
-  <script src="links.js?v=20261101c"></script>
-  <script src="app.js?v=20261101c"></script>
+    <footer class="site-footer">
+      <span id="copyright"></span>
+    </footer>
+  </section>
+
+  <script src="links.js?v=20261107i"></script>
+  <script src="fluid.js?v=20261107i"></script>
+  <script src="app.js?v=20261107i"></script>
 </body>
 </html>
