@@ -28,16 +28,16 @@ SOFTWARE.
  * 适配：支持检测降级、进入主屏停止渲染、去除与空格键冲突
  * ============================================================ */
 
-/* 渲染参数（在参考站基础上适度提亮：底色更亮、泛光更强，但避免过曝） */
+/* 渲染参数：暗罩去掉后改为「亮而柔和」——底色偏亮，但染料/泛光收敛，避免荧光爆色 */
 window.config = window.config || {
   SIM_RESOLUTION: 128, DYE_RESOLUTION: 1024, CAPTURE_RESOLUTION: 512,
   DENSITY_DISSIPATION: 1, VELOCITY_DISSIPATION: 0.2, PRESSURE: 0.8,
   PRESSURE_ITERATIONS: 20, CURL: 30, SPLAT_RADIUS: 0.25, SPLAT_FORCE: 6000,
   SHADING: true, COLORFUL: true, COLOR_UPDATE_SPEED: 10, PAUSED: false,
-  BACK_COLOR: { r: 32, g: 30, b: 58 }, TRANSPARENT: false,
-  BLOOM: true, BLOOM_ITERATIONS: 8, BLOOM_RESOLUTION: 256, BLOOM_INTENSITY: 0.55,
-  BLOOM_THRESHOLD: 0.72, BLOOM_SOFT_KNEE: 0.7,
-  SUNRAYS: true, SUNRAYS_RESOLUTION: 196, SUNRAYS_WEIGHT: 1.0
+  BACK_COLOR: { r: 52, g: 50, b: 94 }, TRANSPARENT: false,
+  BLOOM: true, BLOOM_ITERATIONS: 8, BLOOM_RESOLUTION: 256, BLOOM_INTENSITY: 0.38,
+  BLOOM_THRESHOLD: 0.85, BLOOM_SOFT_KNEE: 0.7,
+  SUNRAYS: true, SUNRAYS_RESOLUTION: 196, SUNRAYS_WEIGHT: 0.4
 };
 window.switchPage = window.switchPage || { switched: false };
 
@@ -1365,10 +1365,11 @@ function correctDeltaY(delta) {
 }
 
 function generateColor() {
-	let c = HSVtoRGB(Math.random(), 1.0, 1.0);
-	c.r *= 0.17;
-	c.g *= 0.17;
-	c.b *= 0.17;
+	/* 饱和度从 1.0 降到 0.72：暗罩去掉后仍保持明亮，但不会变成刺眼的荧光彩球 */
+	let c = HSVtoRGB(Math.random(), 0.72, 1.0);
+	c.r *= 0.15;
+	c.g *= 0.15;
+	c.b *= 0.15;
 	return c;
 }
 
