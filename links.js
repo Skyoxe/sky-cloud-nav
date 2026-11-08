@@ -56,7 +56,7 @@ const REWARD = {
  *     "reward"          弹出打赏赞赏码
  *     "go:downloads"    平滑滚动到网盘下载区
  *     "go:about"        平滑滚动到关于区
- *     "copy"            复制本站网址
+ *     "copy"            复制本站网址（备用，当前界面已移除此按钮）
  *   icon 可选：channel / download / link / info / heart / star
  * ------------------------------------------------------------ */
 const BUTTON_GROUPS = [
@@ -66,9 +66,8 @@ const BUTTON_GROUPS = [
   ],
   [
     { label: "打赏一下", icon: "heart", action: "reward" },
-    { label: "复制网址", icon: "link", action: "copy" },
+    { label: "关于本站", icon: "info", action: "go:about" },
   ],
-  [{ label: "关于本站", icon: "info", action: "go:about" }],
 ];
 
 /* ------------------------------------------------------------
