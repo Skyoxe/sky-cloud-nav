@@ -23,7 +23,11 @@ const SITE = {
   // 页脚
   footer: "© 2026 Sky·光遇 · 资源导航",
 
-  // 二维码弹窗
+  // 加入频道按钮：点一下直接跳转官方邀请链接（新标签页打开）
+  channelUrl: "https://pd.qq.com/s/4jfjlmhx9?b=9",
+
+  // 备用：频道二维码弹窗配置。当前按钮已改为直接跳链接，暂不显示；
+  // 想恢复弹窗，把下面 BUTTON_GROUPS 里「加入频道」的 action 改回 "qr" 即可。
   channelName: "官方频道",
   channelNum: "频道号 pd53086434",
   channelQr: "assets/channel-qr.jpg",
@@ -47,7 +51,8 @@ const REWARD = {
 /* ------------------------------------------------------------
  * 名片卡上的按钮，按「行」分组：一行里放 1~2 个按钮
  *   action 可选值：
- *     "qr"              弹出频道二维码
+ *     "channel"         打开上面的频道邀请链接（新标签页）
+ *     "qr"              弹出频道二维码（备用）
  *     "reward"          弹出打赏赞赏码
  *     "go:downloads"    平滑滚动到网盘下载区
  *     "go:about"        平滑滚动到关于区
@@ -56,7 +61,7 @@ const REWARD = {
  * ------------------------------------------------------------ */
 const BUTTON_GROUPS = [
   [
-    { label: "加入频道", icon: "channel", action: "qr" },
+    { label: "加入频道", icon: "channel", action: "channel" },
     { label: "网盘下载", icon: "download", action: "go:downloads" },
   ],
   [

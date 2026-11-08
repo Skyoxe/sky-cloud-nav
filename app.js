@@ -49,10 +49,15 @@
     document.querySelector('meta[name="description"]').setAttribute("content", `${SITE.cardTitle}：${SITE.introSub}`);
 
     $("card-links").innerHTML = BUTTON_GROUPS.map((group) => {
-      const items = group.map((btn) => `
-        <button type="button" data-action="${esc(btn.action)}">
-          ${ICONS[btn.icon] || ICONS.info}<span>${esc(btn.label)}</span>
-        </button>`).join("");
+      const items = group.map((btn) => {
+        const body = `${ICONS[btn.icon] || ICONS.info}<span>${esc(btn.label)}</span>`;
+        /* action=channel 直接渲染成链接：点一下就进频道，不再弹二维码。
+           用 <a> 而不是 window.open，避免浏览器拦截，也方便长按复制链接 */
+        if (btn.action === "channel") {
+          return `<a href="${esc(SITE.channelUrl)}" target="_blank" rel="noopener noreferrer">${body}</a>`;
+        }
+        return `<button type="button" data-action="${esc(btn.action)}">${body}</button>`;
+      }).join("");
       return `<li class="${group.length > 1 ? "row-pair" : ""}">${items}</li>`;
     }).join("");
 
