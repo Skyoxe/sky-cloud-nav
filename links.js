@@ -26,6 +26,9 @@ const SITE = {
   // 加入频道按钮：点一下直接跳转官方邀请链接（新标签页打开）
   channelUrl: "https://pd.qq.com/s/4jfjlmhx9?b=9",
 
+  // 加入Q群按钮：点一下直接跳转 QQ 群聊邀请链接（新标签页打开）
+  qqGroupUrl: "https://qun.qq.com/universal-share/share?ac=1&authKey=Jg9Ypv0NGuvwQSYLYaJqpwE3SFKvEvm9Ke7W6Wf2GnC5O75sJTLUvaAJcHGOzyFS&busi_data=eyJncm91cENvZGUiOiIxMDUxODkxOTc4IiwidG9rZW4iOiI1N1VzV0xiSnp5QzVkM2RJR3FYMW9JcTBNMGJTSDhlVUQxcUs3WXJDaVl1SmFXd2JDMEtFNjl0U1dBdVh6U0NXIiwidWluIjoiMTE0NzgxNDA4MCJ9&data=DXJQlsgzTkqThOvJpKmtKaWiSE6MddPHAjTnwr2RBJhvnjvq6AaSbiI9psKAdqvSGRVQ836ERsdp4G_zw03-qg&svctype=4&tempid=h5_group_info",
+
   // 备用：频道二维码弹窗配置。当前按钮已改为直接跳链接，暂不显示；
   // 想恢复弹窗，把下面 BUTTON_GROUPS 里「加入频道」的 action 改回 "qr" 即可。
   channelName: "官方频道",
@@ -52,21 +55,22 @@ const REWARD = {
  * 名片卡上的按钮，按「行」分组：一行里放 1~2 个按钮
  *   action 可选值：
  *     "channel"         打开上面的频道邀请链接（新标签页）
+ *     "qqgroup"         打开上面的 QQ 群聊邀请链接（新标签页）
  *     "qr"              弹出频道二维码（备用）
  *     "reward"          弹出打赏赞赏码
  *     "go:downloads"    平滑滚动到网盘下载区
- *     "go:about"        平滑滚动到关于区
+ *     "go:about"        平滑滚动到关于区（备用，当前界面已移除此按钮）
  *     "copy"            复制本站网址（备用，当前界面已移除此按钮）
- *   icon 可选：channel / download / link / info / heart / star
+ *   icon 可选：channel / qq / download / link / info / heart / star
  * ------------------------------------------------------------ */
 const BUTTON_GROUPS = [
   [
     { label: "加入频道", icon: "channel", action: "channel" },
-    { label: "网盘下载", icon: "download", action: "go:downloads" },
+    { label: "加入Q群", icon: "qq", action: "qqgroup" },
   ],
   [
+    { label: "网盘下载", icon: "download", action: "go:downloads" },
     { label: "打赏一下", icon: "heart", action: "reward" },
-    { label: "关于本站", icon: "info", action: "go:about" },
   ],
 ];
 

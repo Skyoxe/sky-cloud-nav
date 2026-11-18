@@ -28,15 +28,15 @@ SOFTWARE.
  * 适配：支持检测降级、进入主屏停止渲染、去除与空格键冲突
  * ============================================================ */
 
-/* 渲染参数：暗罩去掉后改为「亮而柔和」——底色偏亮，但染料/泛光收敛，避免荧光爆色 */
+/* 渲染参数：整体再提亮一档——底色更亮、泛光更强、染料更饱满，同时保住柔和不过曝 */
 window.config = window.config || {
   SIM_RESOLUTION: 128, DYE_RESOLUTION: 1024, CAPTURE_RESOLUTION: 512,
   DENSITY_DISSIPATION: 1, VELOCITY_DISSIPATION: 0.2, PRESSURE: 0.8,
   PRESSURE_ITERATIONS: 20, CURL: 30, SPLAT_RADIUS: 0.25, SPLAT_FORCE: 6000,
   SHADING: true, COLORFUL: true, COLOR_UPDATE_SPEED: 10, PAUSED: false,
-  BACK_COLOR: { r: 52, g: 50, b: 94 }, TRANSPARENT: false,
-  BLOOM: true, BLOOM_ITERATIONS: 8, BLOOM_RESOLUTION: 256, BLOOM_INTENSITY: 0.38,
-  BLOOM_THRESHOLD: 0.85, BLOOM_SOFT_KNEE: 0.7,
+  BACK_COLOR: { r: 62, g: 60, b: 112 }, TRANSPARENT: false,
+  BLOOM: true, BLOOM_ITERATIONS: 8, BLOOM_RESOLUTION: 256, BLOOM_INTENSITY: 0.5,
+  BLOOM_THRESHOLD: 0.78, BLOOM_SOFT_KNEE: 0.7,
   SUNRAYS: true, SUNRAYS_RESOLUTION: 196, SUNRAYS_WEIGHT: 0.4
 };
 window.switchPage = window.switchPage || { switched: false };
@@ -1365,11 +1365,11 @@ function correctDeltaY(delta) {
 }
 
 function generateColor() {
-	/* 饱和度从 1.0 降到 0.72：暗罩去掉后仍保持明亮，但不会变成刺眼的荧光彩球 */
-	let c = HSVtoRGB(Math.random(), 0.72, 1.0);
-	c.r *= 0.15;
-	c.g *= 0.15;
-	c.b *= 0.15;
+	/* 饱和度 0.78 + 亮度系数 0.18：颜色饱满明亮，但不至于荧光爆色 */
+	let c = HSVtoRGB(Math.random(), 0.78, 1.0);
+	c.r *= 0.18;
+	c.g *= 0.18;
+	c.b *= 0.18;
 	return c;
 }
 
@@ -1494,7 +1494,7 @@ document.addEventListener("touchstart", e => {
 		let posY = scaleByPixelRatio(touches[i].pageY);
 		updatePointerDownData(pointers[i + 1], touches[i].identifier, posX, posY);
 	}
-});
+}, { passive: false });
 
 document.addEventListener(
 	"touchmove",
@@ -1513,7 +1513,9 @@ document.addEventListener(
 			updatePointerMoveData(pointer, posX, posY);
 		}
 	},
-	false
+	/* 显式声明非 passive：浏览器默认把 document 级 touchmove 当 passive，
+	   preventDefault 会被忽略，页面滚动会跟流体绘制抢帧导致跟手卡顿 */
+	{ passive: false }
 );
 
 document.addEventListener("touchend", e => {

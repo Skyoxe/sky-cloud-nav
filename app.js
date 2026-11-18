@@ -7,6 +7,7 @@
   const wrap = (paths) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths}</svg>`;
   const ICONS = {
     channel: wrap('<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/>'),
+    qq: wrap('<path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>'),
     download: wrap('<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5M12 15V3"/>'),
     link: wrap('<path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/>'),
     info: wrap('<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/>'),
@@ -51,10 +52,13 @@
     $("card-links").innerHTML = BUTTON_GROUPS.map((group) => {
       const items = group.map((btn) => {
         const body = `${ICONS[btn.icon] || ICONS.info}<span>${esc(btn.label)}</span>`;
-        /* action=channel 直接渲染成链接：点一下就进频道，不再弹二维码。
+        /* action=channel / qqgroup 直接渲染成链接：点一下就跳转，不再弹二维码。
            用 <a> 而不是 window.open，避免浏览器拦截，也方便长按复制链接 */
         if (btn.action === "channel") {
           return `<a href="${esc(SITE.channelUrl)}" target="_blank" rel="noopener noreferrer">${body}</a>`;
+        }
+        if (btn.action === "qqgroup") {
+          return `<a href="${esc(SITE.qqGroupUrl)}" target="_blank" rel="noopener noreferrer">${body}</a>`;
         }
         return `<button type="button" data-action="${esc(btn.action)}">${body}</button>`;
       }).join("");

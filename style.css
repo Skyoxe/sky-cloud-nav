@@ -45,8 +45,10 @@ button { font: inherit; }
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background: radial-gradient(ellipse at 50% 45%, #3d3a70 0%, #322f5c 62%, #292747 100%);
+  background: radial-gradient(ellipse at 50% 45%, #454178 0%, #383463 62%, #2e2b52 100%);
   transition: transform .9s cubic-bezier(.76, 0, .24, 1), opacity .9s cubic-bezier(.76, 0, .24, 1);
+  /* 触控顺滑：禁掉浏览器在首屏上的滚动/缩放手势判定，触摸事件直接喂给流体 */
+  touch-action: none;
 }
 .intro.is-gone { transform: translateY(-100%); opacity: 0; pointer-events: none; }
 /* 首屏双画布：#background = WebGL 流体（同参考站）；#flow = 不支持 WebGL 时的 2D 降级 */
@@ -69,7 +71,7 @@ body.no-webgl .intro {
     radial-gradient(ellipse 40% 46% at 82% 28%, rgba(123, 104, 238, .42), transparent 62%),
     radial-gradient(ellipse 46% 40% at 65% 78%, rgba(255, 107, 170, .30), transparent 62%),
     radial-gradient(ellipse 40% 38% at 25% 82%, rgba(240, 170, 90, .24), transparent 62%),
-    radial-gradient(ellipse at 50% 45%, #3d3a70 0%, #322f5c 62%, #292747 100%);
+    radial-gradient(ellipse at 50% 45%, #454178 0%, #383463 62%, #2e2b52 100%);
 }
 /* 只留标题背后一小团保护晕 + 一层 10% 的柔光薄罩，不再是压暗四周的暗屏 */
 .intro-veil {
