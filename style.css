@@ -631,12 +631,12 @@ body { -webkit-text-size-adjust: 100%; }
   .enter-ring { backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
 }
 
-/* 窄屏（iPhone SE 等）按钮竖排时压紧间距，避免名片卡过长 */
+/* 窄屏（iPhone SE、360px 安卓等）压紧间距，但保持并排按钮不竖排 */
 @media (max-width: 380px) {
   .card-links { gap: 8px; }
-  .card-links li.row-pair { flex-direction: column; gap: 8px; }
   .card-links a,
-  .card-links button { padding: 11px 14px; }
+  .card-links button { padding: 11px 10px; gap: 6px; }
+  .card-links span { font-size: .84rem; }
   .intro-title { font-size: 2.1rem; }
 }
 
