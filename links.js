@@ -68,10 +68,8 @@ const BUTTON_GROUPS = [
     { label: "加入频道", icon: "channel", action: "channel" },
     { label: "加入Q群", icon: "qq", action: "qqgroup" },
   ],
-  [
-    { label: "网盘下载", icon: "download", action: "go:downloads" },
-    { label: "打赏一下", icon: "heart", action: "reward" },
-  ],
+  [{ label: "网盘下载", icon: "download", action: "go:downloads" }],
+  [{ label: "打赏一下", icon: "heart", action: "reward" }],
 ];
 
 /* ------------------------------------------------------------
