@@ -1004,29 +1004,14 @@ const initBackground = () => {
 	changeColor()
 	updateKeywords();
 	initFramebuffers();
-	/* 开场动画：彩色云团在屏幕各处随机浮现，随机方向缓慢涌动，不朝一边喷 */
+	/* 开场（对齐 xixia666 参考站）：一次性在全屏随机泼 5~24 团彩色云，
+	   每团方向随机，随后靠流体自然演化；不做定时扫屏、不做定向喷射 */
+	multipleSplats(parseInt(Math.random() * 20) + 5);
 	update(true);
-	startIntroWave();
 }
 
 function startIntroWave() {
-	const steps = 8;
-	let i = 0;
-	window.__introTimer = setInterval(() => {
-		if (window.__fluidStopped || i >= steps) { clearInterval(window.__introTimer); return; }
-		for (let k = 0; k < 2; k++) {
-			const color = generateColor();
-			color.r *= 10.0;
-			color.g *= 10.0;
-			color.b *= 10.0;
-			const x = 0.10 + Math.random() * 0.80;   /* 横向铺满全屏 */
-			const y = 0.10 + Math.random() * 0.80;   /* 纵向铺满全屏 */
-			const ang = Math.random() * Math.PI * 2; /* 每团云方向随机 */
-			const speed = 260 + Math.random() * 380; /* 温和推力，只让云缓缓漂开 */
-			splat(x, y, Math.cos(ang) * speed, Math.sin(ang) * speed, color);
-		}
-		i++;
-	}, 160);
+	/* 已废弃：旧版从左到右扫屏动画（用户反馈"像从左边喷出来"），保留空函数避免外部引用报错 */
 }
 
 window.addEventListener(visibilityChangeEvent, initBackground)
