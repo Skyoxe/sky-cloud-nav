@@ -1054,7 +1054,7 @@ function updateColors(dt) {
 	if (colorUpdateTimer >= 1) {
 		colorUpdateTimer = wrap(colorUpdateTimer, 0, 1);
 		pointers.forEach(p => {
-			p.color = generateColor();
+			p.color = generatePointerColor();
 		});
 	}
 }
@@ -1337,7 +1337,7 @@ function updatePointerDownData(pointer, id, posX, posY) {
 	pointer.prevTexcoordY = pointer.texcoordY;
 	pointer.deltaX = 0;
 	pointer.deltaY = 0;
-	pointer.color = generateColor();
+	pointer.color = generatePointerColor();
 }
 
 function updatePointerMoveData(pointer, posX, posY) {
@@ -1367,11 +1367,21 @@ function correctDeltaY(delta) {
 }
 
 function generateColor() {
-	/* 饱和度 0.80 + 能量系数 0.17：进页面云团更多更亮更艳；泛光强度兜底压住荧光感 */
-	let c = HSVtoRGB(Math.random(), 0.80, 1.0);
-	c.r *= 0.17;
-	c.g *= 0.17;
-	c.b *= 0.17;
+	/* 饱和度 1.0 = 纯鲜艳（用户要求）；亮度系数 0.20 让初始大团云更亮。
+	   触控拖出的云单独走 generatePointerColor() 压暗，避免手一划就一片惨白 */
+	let c = HSVtoRGB(Math.random(), 1.0, 1.0);
+	c.r *= 0.20;
+	c.g *= 0.20;
+	c.b *= 0.20;
+	return c;
+}
+
+/* 触控专用：纯鲜艳的色相不变，但亮度压到 0.75，手指划出的轨迹淡一些 */
+function generatePointerColor() {
+	let c = generateColor();
+	c.r *= 0.75;
+	c.g *= 0.75;
+	c.b *= 0.75;
 	return c;
 }
 
