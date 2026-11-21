@@ -35,7 +35,7 @@ window.config = window.config || {
   PRESSURE_ITERATIONS: 20, CURL: 30, SPLAT_RADIUS: 0.25, SPLAT_FORCE: 6000,
   SHADING: true, COLORFUL: true, COLOR_UPDATE_SPEED: 10, PAUSED: false,
   BACK_COLOR: { r: 62, g: 60, b: 112 }, TRANSPARENT: false,
-  BLOOM: true, BLOOM_ITERATIONS: 8, BLOOM_RESOLUTION: 256, BLOOM_INTENSITY: 0.4,
+  BLOOM: true, BLOOM_ITERATIONS: 8, BLOOM_RESOLUTION: 256, BLOOM_INTENSITY: 0.48,
   BLOOM_THRESHOLD: 0.86, BLOOM_SOFT_KNEE: 0.7,
   SUNRAYS: true, SUNRAYS_RESOLUTION: 196, SUNRAYS_WEIGHT: 0.4
 };
@@ -1006,7 +1006,7 @@ const initBackground = () => {
 	initFramebuffers();
 	/* 启动泼墨固定 4 次：随机 5~25 次会泼出满屏小彩球，观感像荧光灯泡；
 	   少量大团既鲜艳又有流体云的质感 */
-	multipleSplats(4);
+	multipleSplats(8);
 	update(true)
 }
 
@@ -1367,11 +1367,11 @@ function correctDeltaY(delta) {
 }
 
 function generateColor() {
-	/* 饱和度 0.80：比柔版艳一档；能量系数 0.15 + 泛光阈值兜底，压住荧光感 */
+	/* 饱和度 0.80 + 能量系数 0.17：进页面云团更多更亮更艳；泛光强度兜底压住荧光感 */
 	let c = HSVtoRGB(Math.random(), 0.80, 1.0);
-	c.r *= 0.15;
-	c.g *= 0.15;
-	c.b *= 0.15;
+	c.r *= 0.17;
+	c.g *= 0.17;
+	c.b *= 0.17;
 	return c;
 }
 
