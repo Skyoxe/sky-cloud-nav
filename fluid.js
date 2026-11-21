@@ -34,7 +34,7 @@ window.config = window.config || {
   DENSITY_DISSIPATION: 1, VELOCITY_DISSIPATION: 0.2, PRESSURE: 0.8,
   PRESSURE_ITERATIONS: 20, CURL: 30, SPLAT_RADIUS: 0.25, SPLAT_FORCE: 6000,
   SHADING: true, COLORFUL: true, COLOR_UPDATE_SPEED: 10, PAUSED: false,
-  BACK_COLOR: { r: 0, g: 0, b: 0 }, TRANSPARENT: false,
+  BACK_COLOR: { r: 76, g: 72, b: 135 }, TRANSPARENT: false,
   BLOOM: true, BLOOM_ITERATIONS: 8, BLOOM_RESOLUTION: 256, BLOOM_INTENSITY: 0.48,
   BLOOM_THRESHOLD: 0.86, BLOOM_SOFT_KNEE: 0.7,
   SUNRAYS: true, SUNRAYS_RESOLUTION: 196, SUNRAYS_WEIGHT: 0.4
@@ -1004,30 +1004,29 @@ const initBackground = () => {
 	changeColor()
 	updateKeywords();
 	initFramebuffers();
-	/* 开场动画：一道彩色云浪从左到右扫过整个屏幕，随后随流体自然消散 */
+	/* 开场动画：彩色云团在屏幕各处随机浮现，随机方向缓慢涌动，不朝一边喷 */
 	update(true);
 	startIntroWave();
 }
 
 function startIntroWave() {
-	const steps = 16;
+	const steps = 8;
 	let i = 0;
 	window.__introTimer = setInterval(() => {
 		if (window.__fluidStopped || i >= steps) { clearInterval(window.__introTimer); return; }
-		const t = i / (steps - 1);
-		const x = 0.04 + 0.92 * t;          /* 从屏幕最左扫到最右 */
 		for (let k = 0; k < 2; k++) {
 			const color = generateColor();
 			color.r *= 10.0;
 			color.g *= 10.0;
 			color.b *= 10.0;
-			const y = 0.10 + Math.random() * 0.80;   /* 纵向铺满整个屏幕 */
-			splat(x + (Math.random() - 0.5) * 0.06, y,
-				1400 + Math.random() * 900,          /* 向右的大推力，让云浪向前涌动 */
-				(Math.random() - 0.5) * 500, color);
+			const x = 0.10 + Math.random() * 0.80;   /* 横向铺满全屏 */
+			const y = 0.10 + Math.random() * 0.80;   /* 纵向铺满全屏 */
+			const ang = Math.random() * Math.PI * 2; /* 每团云方向随机 */
+			const speed = 260 + Math.random() * 380; /* 温和推力，只让云缓缓漂开 */
+			splat(x, y, Math.cos(ang) * speed, Math.sin(ang) * speed, color);
 		}
 		i++;
-	}, 120);
+	}, 160);
 }
 
 window.addEventListener(visibilityChangeEvent, initBackground)
