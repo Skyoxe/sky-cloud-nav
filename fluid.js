@@ -28,16 +28,16 @@ SOFTWARE.
  * 适配：支持检测降级、进入主屏停止渲染、去除与空格键冲突
  * ============================================================ */
 
-/* 渲染参数：整体再提亮一档——底色更亮、泛光更强、染料更饱满，同时保住柔和不过曝 */
+/* 渲染参数：完全对齐参考站 xixia666.github.io（SimonAKing/HomePage background.js） */
 window.config = window.config || {
   SIM_RESOLUTION: 128, DYE_RESOLUTION: 1024, CAPTURE_RESOLUTION: 512,
   DENSITY_DISSIPATION: 1, VELOCITY_DISSIPATION: 0.2, PRESSURE: 0.8,
   PRESSURE_ITERATIONS: 20, CURL: 30, SPLAT_RADIUS: 0.25, SPLAT_FORCE: 6000,
   SHADING: true, COLORFUL: true, COLOR_UPDATE_SPEED: 10, PAUSED: false,
-  BACK_COLOR: { r: 76, g: 72, b: 135 }, TRANSPARENT: false,
-  BLOOM: true, BLOOM_ITERATIONS: 8, BLOOM_RESOLUTION: 256, BLOOM_INTENSITY: 0.48,
-  BLOOM_THRESHOLD: 0.86, BLOOM_SOFT_KNEE: 0.7,
-  SUNRAYS: true, SUNRAYS_RESOLUTION: 196, SUNRAYS_WEIGHT: 0.4
+  BACK_COLOR: { r: 26, g: 26, b: 46 }, TRANSPARENT: false,
+  BLOOM: true, BLOOM_ITERATIONS: 8, BLOOM_RESOLUTION: 256, BLOOM_INTENSITY: 0.4,
+  BLOOM_THRESHOLD: 0.8, BLOOM_SOFT_KNEE: 0.7,
+  SUNRAYS: true, SUNRAYS_RESOLUTION: 196, SUNRAYS_WEIGHT: 1.0
 };
 window.switchPage = window.switchPage || { switched: false };
 
@@ -1371,12 +1371,12 @@ function correctDeltaY(delta) {
 }
 
 function generateColor() {
-	/* 饱和度 1.0 = 纯鲜艳（用户要求）；亮度系数 0.20 让初始大团云更亮。
-	   触控拖出的云单独走 generatePointerColor() 压暗，避免手一划就一片惨白 */
+	/* 与参考站完全一致：纯饱和色相 + 亮度系数 0.15。
+	   触控拖出的云另走 generatePointerColor() 压暗，避免手一划就一片惨白 */
 	let c = HSVtoRGB(Math.random(), 1.0, 1.0);
-	c.r *= 0.20;
-	c.g *= 0.20;
-	c.b *= 0.20;
+	c.r *= 0.15;
+	c.g *= 0.15;
+	c.b *= 0.15;
 	return c;
 }
 
