@@ -268,8 +268,8 @@ body.no-webgl .intro {
   text-align: center;
 }
 .card-avatar {
-  width: 108px;
-  height: 108px;
+  width: 128px;
+  height: 128px;
   border-radius: 50%;
   border: 3px solid rgba(255, 255, 255, .62);
   object-fit: cover;
@@ -614,7 +614,7 @@ body { -webkit-text-size-adjust: 100%; }
   .card { min-height: calc(100dvh - 150px); padding: 34px 20px; }
   /* 手机上少一层实时模糊，滚动更顺、更省电 */
   .card::before { backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
-  .card-avatar { width: 92px; height: 92px; }
+  .card-avatar { width: 108px; height: 108px; }
   .card-links { gap: 12px; margin-top: 22px; }
   .card-links a,
   .card-links button { padding: 13px 14px; }
