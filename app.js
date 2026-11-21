@@ -41,7 +41,8 @@
     $("intro-sub").textContent = SITE.introSub;
     $("card-title").textContent = SITE.cardTitle;
     $("card-slogan").textContent = SITE.cardSlogan;
-    $("counter").textContent = SITE.counter.replace("{n}", LINKS.length);
+    const counter = $("counter");
+    if (counter) counter.textContent = SITE.counter.replace("{n}", LINKS.length);
     $("downloads-title").textContent = SITE.downloadsTitle;
     $("downloads-sub").textContent = SITE.downloadsSub;
     $("about-title").textContent = SITE.aboutTitle;

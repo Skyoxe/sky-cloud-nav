@@ -225,6 +225,7 @@ body.no-webgl .intro {
 }
 
 /* ---- 名片卡 ---- */
+/* 卡片区拉满一整屏：卡片本身随视口撑高，内容居中分布，与下方提示条拉开距离 */
 .card-wrap {
   position: relative;
   z-index: 2;
@@ -232,12 +233,15 @@ body.no-webgl .intro {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 48px 28px 36px;
+  padding: 48px 28px 64px;
 }
 .card {
   position: relative;
   width: 100%;
   max-width: 420px;
+  min-height: min(calc(100dvh - 170px), 780px);
+  display: flex;
+  align-items: center;
   padding: 44px 34px;
   border-radius: 24px;
 }
@@ -258,21 +262,23 @@ body.no-webgl .intro {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
+  justify-content: center;
+  gap: 16px;
+  width: 100%;
   text-align: center;
 }
 .card-avatar {
-  width: 96px;
-  height: 96px;
+  width: 108px;
+  height: 108px;
   border-radius: 50%;
   border: 3px solid rgba(255, 255, 255, .62);
   object-fit: cover;
   background: #fff;
   box-shadow: 0 12px 34px rgba(0, 0, 0, .38), 0 0 0 5px rgba(169, 140, 255, .16);
 }
-.card h1 { margin-top: 4px; font-size: 1.6rem; font-weight: 600; letter-spacing: .02em; }
+.card h1 { margin-top: 8px; font-size: 1.6rem; font-weight: 600; letter-spacing: .02em; }
 .card-slogan { font-size: .9rem; font-weight: 300; color: var(--muted); letter-spacing: .04em; }
-.card-links { display: flex; flex-direction: column; gap: 10px; width: 100%; margin-top: 14px; }
+.card-links { display: flex; flex-direction: column; gap: 14px; width: 100%; margin-top: 26px; }
 .card-links li { width: 100%; }
 .card-links li.row-pair { display: flex; gap: 10px; }
 .card-links li.row-pair > * { flex: 1; min-width: 0; }
@@ -322,7 +328,7 @@ body.no-webgl .intro {
 .toast.is-on { opacity: 1; transform: translate(-50%, 0); }
 
 /* ---- 提示条 ---- */
-.notice-wrap { position: relative; z-index: 2; max-width: 720px; margin: 0 auto; padding: 0 28px 8px; }
+.notice-wrap { position: relative; z-index: 2; max-width: 720px; margin: 0 auto; padding: 30px 28px 8px; }
 .notice {
   display: flex;
   gap: 12px;
@@ -357,7 +363,7 @@ body.no-webgl .intro {
 }
 
 /* ---- 网盘下载 ---- */
-.downloads { position: relative; z-index: 2; max-width: 720px; margin: 0 auto; padding: 36px 28px 10px; border-radius: 20px; }
+.downloads { position: relative; z-index: 2; max-width: 720px; margin: 0 auto; padding: 46px 28px 10px; border-radius: 20px; }
 .downloads h2 { font-size: clamp(1.4rem, 3.6vw, 1.9rem); font-weight: 600; letter-spacing: -.02em; margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
 .downloads h2::before { content: ""; width: 4px; height: 22px; border-radius: 2px; background: var(--violet); }
 .downloads-sub { color: var(--muted); font-size: .92rem; line-height: 1.6; margin-bottom: 22px; }
@@ -603,19 +609,20 @@ body { -webkit-text-size-adjust: 100%; }
 }
 
 @media (max-width: 768px) {
-  .topbar { padding: calc(16px + var(--safe-t)) 20px 0; }
-  .card-wrap { min-height: auto; padding: 36px 20px 28px; }
-  .card { padding: 30px 20px; }
+  /* 手机上卡片区同样占满一整屏（去掉 topbar 后自然顶格），与提示条拉开距离 */
+  .card-wrap { min-height: min(100dvh, 880px); padding: 40px 20px 56px; }
+  .card { min-height: calc(100dvh - 150px); padding: 34px 20px; }
   /* 手机上少一层实时模糊，滚动更顺、更省电 */
   .card::before { backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
-  .card-avatar { width: 80px; height: 80px; }
+  .card-avatar { width: 92px; height: 92px; }
+  .card-links { gap: 12px; margin-top: 22px; }
   .card-links a,
   .card-links button { padding: 13px 14px; }
   .card-links span { font-size: .88rem; }
-  .notice-wrap { padding: 0 20px 8px; }
+  .notice-wrap { padding: 26px 20px 8px; }
   .notice { padding: 13px 15px 14px; gap: 10px; }
   .notice-list li { font-size: .82rem; line-height: 1.7; }
-  .downloads { padding: 30px 20px 10px; }
+  .downloads { padding: 40px 20px 10px; }
   .downloads-grid { grid-template-columns: 1fr; }
   /* 逐张卡片的 backdrop-filter 是手机滚动时最大的开销，改半透明实底 */
   .download-card,

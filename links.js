@@ -18,7 +18,7 @@ const SITE = {
   // 区块标题
   downloadsTitle: "网盘下载",
   downloadsSub: "选择你常用的网盘，点击卡片即可跳转",
-  aboutTitle: "关于本站",
+  aboutTitle: "关于",
 
   // 页脚
   footer: "© 2026 Sky·光遇 · 资源导航",
