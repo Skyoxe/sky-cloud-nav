@@ -34,7 +34,7 @@ window.config = window.config || {
   DENSITY_DISSIPATION: 1, VELOCITY_DISSIPATION: 0.2, PRESSURE: 0.8,
   PRESSURE_ITERATIONS: 20, CURL: 30, SPLAT_RADIUS: 0.25, SPLAT_FORCE: 6000,
   SHADING: true, COLORFUL: true, COLOR_UPDATE_SPEED: 10, PAUSED: false,
-  BACK_COLOR: { r: 80, g: 78, b: 140 }, TRANSPARENT: false,
+  BACK_COLOR: { r: 0, g: 0, b: 0 }, TRANSPARENT: false,
   BLOOM: true, BLOOM_ITERATIONS: 8, BLOOM_RESOLUTION: 256, BLOOM_INTENSITY: 0.48,
   BLOOM_THRESHOLD: 0.86, BLOOM_SOFT_KNEE: 0.7,
   SUNRAYS: true, SUNRAYS_RESOLUTION: 196, SUNRAYS_WEIGHT: 0.4
@@ -1004,10 +1004,30 @@ const initBackground = () => {
 	changeColor()
 	updateKeywords();
 	initFramebuffers();
-	/* 启动泼墨固定 4 次：随机 5~25 次会泼出满屏小彩球，观感像荧光灯泡；
-	   少量大团既鲜艳又有流体云的质感 */
-	multipleSplats(8);
-	update(true)
+	/* 开场动画：一道彩色云浪从左到右扫过整个屏幕，随后随流体自然消散 */
+	update(true);
+	startIntroWave();
+}
+
+function startIntroWave() {
+	const steps = 16;
+	let i = 0;
+	window.__introTimer = setInterval(() => {
+		if (window.__fluidStopped || i >= steps) { clearInterval(window.__introTimer); return; }
+		const t = i / (steps - 1);
+		const x = 0.04 + 0.92 * t;          /* 从屏幕最左扫到最右 */
+		for (let k = 0; k < 2; k++) {
+			const color = generateColor();
+			color.r *= 10.0;
+			color.g *= 10.0;
+			color.b *= 10.0;
+			const y = 0.10 + Math.random() * 0.80;   /* 纵向铺满整个屏幕 */
+			splat(x + (Math.random() - 0.5) * 0.06, y,
+				1400 + Math.random() * 900,          /* 向右的大推力，让云浪向前涌动 */
+				(Math.random() - 0.5) * 500, color);
+		}
+		i++;
+	}, 120);
 }
 
 window.addEventListener(visibilityChangeEvent, initBackground)
@@ -1547,15 +1567,12 @@ window.__fluidStop = function () {
   window.__fluidStopped = true;
   if (typeof animationID === 'number' && animationID) cancelAnimationFrame(animationID);
   if (window.__fluidTimer) clearInterval(window.__fluidTimer);
+  if (window.__introTimer) clearInterval(window.__introTimer);
   switchPage.switched = true;
 };
 window.__fluidSplat = function (n) {
   if (!window.__fluidStopped) splatStack.push(n || 3);
 };
-/* 静止时低频自动喷发，保持首屏流动感（可在配置里关掉） */
-window.__fluidTimer = setInterval(function () {
-  if (window.__fluidStopped || document.hidden) return;
-  splatStack.push(1);
-}, 2600);
+/* 开场云浪扫过全屏后自然消散，不再后台定时补墨（用户要求云会慢慢消失） */
 
 })();
