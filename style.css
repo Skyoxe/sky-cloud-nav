@@ -48,7 +48,7 @@ button { font: inherit; }
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background: radial-gradient(ellipse at 50% 45%, #504c8c 0%, #454178 62%, #383463 100%);
+  background: #1a1a2e; /* 与参考站 xixia666.github.io 一致的深靛蓝底 */
   transition: transform .9s cubic-bezier(.76, 0, .24, 1), opacity .9s cubic-bezier(.76, 0, .24, 1);
   /* 触控顺滑：禁掉浏览器在首屏上的滚动/缩放手势判定，触摸事件直接喂给流体 */
   touch-action: none;
@@ -74,17 +74,15 @@ body.no-webgl .intro {
     radial-gradient(ellipse 40% 46% at 82% 28%, rgba(123, 104, 238, .42), transparent 62%),
     radial-gradient(ellipse 46% 40% at 65% 78%, rgba(255, 107, 170, .30), transparent 62%),
     radial-gradient(ellipse 40% 38% at 25% 82%, rgba(240, 170, 90, .24), transparent 62%),
-    radial-gradient(ellipse at 50% 45%, #504c8c 0%, #454178 62%, #383463 100%);
+    #1a1a2e;
 }
-/* 标题保护晕收小调淡，全屏灰罩去掉，底色整体提亮一档 */
+/* 无遮罩：与参考站一致，云团原色呈现，文字靠自身 text-shadow 保证可读 */
 .intro-veil {
   position: absolute;
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  background:
-    radial-gradient(ellipse 38% 28% at 50% 46%, rgba(12, 10, 30, .30) 0%, rgba(12, 10, 30, .12) 58%, transparent 100%),
-    linear-gradient(0deg, rgba(10, 10, 26, .14) 0%, transparent 20%);
+  background: none;
 }
 .intro-inner { position: relative; z-index: 3; text-align: center; padding: 24px; }
 .intro-title {
