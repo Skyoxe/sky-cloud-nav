@@ -48,7 +48,7 @@ button { font: inherit; }
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background: radial-gradient(ellipse at 50% 45%, #454178 0%, #383463 62%, #2e2b52 100%);
+  background: radial-gradient(ellipse at 50% 45%, #504c8c 0%, #423e74 62%, #37345f 100%);
   transition: transform .9s cubic-bezier(.76, 0, .24, 1), opacity .9s cubic-bezier(.76, 0, .24, 1);
   /* 触控顺滑：禁掉浏览器在首屏上的滚动/缩放手势判定，触摸事件直接喂给流体 */
   touch-action: none;
@@ -74,18 +74,17 @@ body.no-webgl .intro {
     radial-gradient(ellipse 40% 46% at 82% 28%, rgba(123, 104, 238, .42), transparent 62%),
     radial-gradient(ellipse 46% 40% at 65% 78%, rgba(255, 107, 170, .30), transparent 62%),
     radial-gradient(ellipse 40% 38% at 25% 82%, rgba(240, 170, 90, .24), transparent 62%),
-    radial-gradient(ellipse at 50% 45%, #454178 0%, #383463 62%, #2e2b52 100%);
+    radial-gradient(ellipse at 50% 45%, #504c8c 0%, #423e74 62%, #37345f 100%);
 }
-/* 只留标题背后一小团保护晕 + 一层 10% 的柔光薄罩，不再是压暗四周的暗屏 */
+/* 标题保护晕收小调淡，全屏灰罩去掉，底色整体提亮一档 */
 .intro-veil {
   position: absolute;
   inset: 0;
   z-index: 1;
   pointer-events: none;
   background:
-    radial-gradient(ellipse 42% 32% at 50% 46%, rgba(12, 10, 30, .38) 0%, rgba(12, 10, 30, .16) 58%, transparent 100%),
-    linear-gradient(0deg, rgba(10, 10, 26, .18) 0%, transparent 20%),
-    linear-gradient(rgba(26, 24, 52, .10), rgba(26, 24, 52, .10));
+    radial-gradient(ellipse 38% 28% at 50% 46%, rgba(12, 10, 30, .30) 0%, rgba(12, 10, 30, .12) 58%, transparent 100%),
+    linear-gradient(0deg, rgba(10, 10, 26, .14) 0%, transparent 20%);
 }
 .intro-inner { position: relative; z-index: 3; text-align: center; padding: 24px; }
 .intro-title {
